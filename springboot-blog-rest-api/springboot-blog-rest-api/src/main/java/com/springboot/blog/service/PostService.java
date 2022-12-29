@@ -1,12 +1,18 @@
 package com.springboot.blog.service;
 
 import com.springboot.blog.payload.PostDto;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface PostService {
-     PostDto createPost(PostDto postDto);
-     List<PostDto> getAllPosts ();
-     PostDto getPostById(Long id);
-     PostDto updatePost(Long id, PostDto postDto);
+    PostDto createPost(PostDto postDto);
+
+    List<PostDto> getAllPosts();
+
+    PostDto getPostById(long id);
+
+    PostDto updatePost(long id, PostDto postDto);
+
+    void deletePost(long id);
 }

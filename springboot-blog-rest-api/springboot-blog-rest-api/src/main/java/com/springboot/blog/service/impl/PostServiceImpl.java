@@ -5,6 +5,8 @@ import com.springboot.blog.model.Post;
 import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +17,6 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     //inject post repository, constructor-based
-
     private PostRepository postRepository;
 
     //@Autowired //from spring 4.3 onwards, if a class is configured as a spring bean, and it has only one constructor,
@@ -76,27 +77,30 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto getPostById(Long id) {
+    public PostDto getPostById(long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         return mapEntityToDto(post);
     }
 
     @Override
-    public PostDto updatePost(Long id, PostDto postDto) {
+    public PostDto updatePost(long id, PostDto postDto) {
         //get post
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         //update
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         post.setDescription(postDto.getDescription());
-
-
         //save and return
         Post updatedPost = postRepository.save(post);
 
-
         return mapEntityToDto(updatedPost);
+    }
 
+    @Override
+    public void deletePost(long id) {
+        //find post
+       Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post","id",id));
+        postRepository.delete(post);
     }
 
 

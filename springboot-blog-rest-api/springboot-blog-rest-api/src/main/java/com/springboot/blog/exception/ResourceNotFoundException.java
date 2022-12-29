@@ -3,8 +3,9 @@ package com.springboot.blog.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND) //causes Spring Boot to respond with the specified HTTP status code whenever this exception is thrown from your controller
-public class ResourceNotFoundException extends RuntimeException{ //always extend RuntimeException
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+//causes Spring Boot to respond with the specified HTTP status code whenever this exception is thrown from your controller
+public class ResourceNotFoundException extends RuntimeException { //always extend RuntimeException
     private String resourceName;
     private String fieldName;
     private Long fieldValue;
