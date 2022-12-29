@@ -5,6 +5,9 @@ import com.springboot.blog.model.Post;
 import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,9 +64,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
+    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
 
-        List<Post> posts = postRepository.findAll();
+        //Add pagination and sorting
+
+        //Create Pageable instance
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        //get content for page objects
+        List<Post> listOfPosts = posts.getContent();
+
         List<PostDto> postsResponseDto = new ArrayList<>();
         //Lamda expression, one way to convert list of datatype into list of another
 //        posts.forEach((post -> {
@@ -71,7 +83,8 @@ public class PostServiceImpl implements PostService {
 //        }));
 
         //another appraoch
-        postsResponseDto = posts.stream().map(post -> mapEntityToDto(post)).collect(Collectors.toList());
+        postsResponseDto = listOfPosts.stream().map(post -> mapEntityToDto(post)).collect(Collectors.toList());
+
 
         return postsResponseDto;
     }
