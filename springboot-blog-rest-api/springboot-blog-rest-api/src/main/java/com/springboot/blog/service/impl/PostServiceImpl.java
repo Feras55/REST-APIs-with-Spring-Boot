@@ -3,6 +3,7 @@ package com.springboot.blog.service.impl;
 import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.model.Post;
 import com.springboot.blog.payload.PostDto;
+import com.springboot.blog.payload.PostResponseDto;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
 import org.springframework.data.domain.Page;
@@ -64,7 +65,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+    public PostResponseDto getAllPosts(int pageNo, int pageSize) {
 
         //Add pagination and sorting
 
@@ -76,17 +77,20 @@ public class PostServiceImpl implements PostService {
         //get content for page objects
         List<Post> listOfPosts = posts.getContent();
 
-        List<PostDto> postsResponseDto = new ArrayList<>();
+
         //Lamda expression, one way to convert list of datatype into list of another
 //        posts.forEach((post -> {
 //            postsResponseDto.add(mapEntityToDto(post));
 //        }));
 
         //another appraoch
-        postsResponseDto = listOfPosts.stream().map(post -> mapEntityToDto(post)).collect(Collectors.toList());
+        List<PostDto> content = listOfPosts.stream().map(post -> mapEntityToDto(post)).collect(Collectors.toList());
 
+        PostResponseDto postResponseDto = new PostResponseDto(
+                content,posts.getNumber(),posts.getSize(),posts.getTotalElements(),posts.getTotalPages(),posts.isLast()
+        );
 
-        return postsResponseDto;
+        return postResponseDto;
     }
 
     @Override
