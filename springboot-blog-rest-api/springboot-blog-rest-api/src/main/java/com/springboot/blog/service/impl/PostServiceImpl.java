@@ -9,6 +9,7 @@ import com.springboot.blog.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -65,12 +66,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDto getAllPosts(int pageNo, int pageSize) {
+    public PostResponseDto getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
 
         //Add pagination and sorting
 
         //Create Pageable instance
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        //Create instance of sort according to sort direction
+        Sort mySort = (sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, mySort);
 
         Page<Post> posts = postRepository.findAll(pageable);
 
@@ -86,9 +90,7 @@ public class PostServiceImpl implements PostService {
         //another appraoch
         List<PostDto> content = listOfPosts.stream().map(post -> mapEntityToDto(post)).collect(Collectors.toList());
 
-        PostResponseDto postResponseDto = new PostResponseDto(
-                content,posts.getNumber(),posts.getSize(),posts.getTotalElements(),posts.getTotalPages(),posts.isLast()
-        );
+        PostResponseDto postResponseDto = new PostResponseDto(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 
         return postResponseDto;
     }
@@ -116,7 +118,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(long id) {
         //find post
-       Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post","id",id));
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         postRepository.delete(post);
     }
 
