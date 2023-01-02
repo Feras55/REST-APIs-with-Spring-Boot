@@ -22,7 +22,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentDto> createNewComment(
             @RequestBody CommentDto commentDto,
-            @PathVariable(name = "postId") long postId) {
+            @PathVariable(value = "postId") long postId) {
         return new ResponseEntity<>(commentService.createComment(commentDto, postId), HttpStatus.CREATED);
     }
 
@@ -34,7 +34,16 @@ public class CommentController {
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
     ) {
-        return new ResponseEntity<>(commentService.getAllComments(postId, pageNo,  pageSize,  sortBy,  sortDir), HttpStatus.OK);
+        return new ResponseEntity<>(commentService.getAllCommentsByPostId(postId, pageNo,  pageSize,  sortBy,  sortDir), HttpStatus.OK);
+    }
+
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentDto> getCommentById(
+            @PathVariable(value = "postId") long postId,
+            @PathVariable(value = "commentId") long commentId
+    ){
+        return new ResponseEntity<>(commentService.getCommentById(postId,commentId),HttpStatus.OK);
+
     }
 
 
