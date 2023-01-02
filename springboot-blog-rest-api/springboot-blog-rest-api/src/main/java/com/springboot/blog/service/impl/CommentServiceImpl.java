@@ -68,13 +68,38 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto updateComment(long id, CommentDto commentDto) {
-        return null;
+    public CommentDto updateComment(long postId, long commentId, CommentDto commentRequestDto) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                ()-> new ResourceNotFoundException("Comment", "ID", commentId)
+        );
+
+        if(!comment.getPost().equals(post)){
+            throw new BlogApiException(HttpStatus.BAD_REQUEST,"Comment does not belong to post");
+        }
+
+        comment.setName(commentRequestDto.getName());
+        comment.setBody(commentRequestDto.getBody());
+        comment.setEmail(commentRequestDto.getEmail());
+
+        Comment commentResponse = commentRepository.save(comment);
+        return mapToDto(commentResponse);
     }
 
     @Override
-    public void deleteComment(long id) {
+    public void deleteComment(long postId, long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
 
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                ()-> new ResourceNotFoundException("Comment", "ID", commentId)
+        );
+
+        if(!comment.getPost().equals(post)){
+            throw new BlogApiException(HttpStatus.BAD_REQUEST,"Comment does not belong to post");
+        }
+
+        commentRepository.delete(comment);
     }
 
     private static Comment mapToEntity(CommentDto commentDto) {
