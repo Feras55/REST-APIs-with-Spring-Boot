@@ -6,6 +6,7 @@ import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.payload.PostResponseDto;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +21,14 @@ public class PostServiceImpl implements PostService {
     //inject post repository, constructor-based
     private PostRepository postRepository;
 
+    //Model mapper is used to ease the conversion between entity and DTO objects
+    private ModelMapper modelMapper;
+
     //@Autowired //from spring 4.3 onwards, if a class is configured as a spring bean, and it has only one constructor,
     // you don't need the @AutoWired annotation to inject dependencies
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -44,20 +49,22 @@ public class PostServiceImpl implements PostService {
         return postResponeDto;
     }
 
-    private static Post mapToEntity(PostDto postDto) {
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setContent(postDto.getContent());
-        post.setDescription(postDto.getDescription());
+    private Post mapToEntity(PostDto postDto) {
+        Post post = modelMapper.map(postDto, Post.class);
+//        Post post = new Post();
+//        post.setTitle(postDto.getTitle());
+//        post.setContent(postDto.getContent());
+//        post.setDescription(postDto.getDescription());
         return post;
     }
 
-    private static PostDto mapToDto(Post post) {
-        PostDto postResponeDto = new PostDto();
-        postResponeDto.setId(post.getId());
-        postResponeDto.setTitle(post.getTitle());
-        postResponeDto.setContent(post.getContent());
-        postResponeDto.setDescription(post.getDescription());
+    private PostDto mapToDto(Post post) {
+        PostDto postResponeDto = modelMapper.map(post, PostDto.class);
+//        PostDto postResponeDto = new PostDto();
+//        postResponeDto.setId(post.getId());
+//        postResponeDto.setTitle(post.getTitle());
+//        postResponeDto.setContent(post.getContent());
+//        postResponeDto.setDescription(post.getDescription());
         return postResponeDto;
     }
 

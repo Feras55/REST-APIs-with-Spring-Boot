@@ -1,5 +1,6 @@
 package com.springboot.blog.model;
 
+import com.springboot.blog.payload.CommentDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +28,6 @@ public class Post {
     private String description;
     @Column(name = "content", nullable = false)
     private String content;
-
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 }
