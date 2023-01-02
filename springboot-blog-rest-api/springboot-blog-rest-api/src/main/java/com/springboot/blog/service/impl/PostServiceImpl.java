@@ -30,7 +30,7 @@ public class PostServiceImpl implements PostService {
     public PostDto createPost(PostDto postDto) {
 
         //convert DTO into entity
-        Post post = mapDtoToEntity(postDto);
+        Post post = mapToEntity(postDto);
 
         //save entity
         postRepository.save(post);
@@ -38,13 +38,13 @@ public class PostServiceImpl implements PostService {
         //convert entity to DTO,
         // !!question here: Why not return the DTO passed as a parameter? We need to send the saved object return back to the client.
         //Note that we are adding the post id in the response DTO.
-        PostDto postResponeDto = mapEntityToDto(post);
+        PostDto postResponeDto = mapToDto(post);
 
         //return responseDTO
         return postResponeDto;
     }
 
-    private static Post mapDtoToEntity(PostDto postDto) {
+    private static Post mapToEntity(PostDto postDto) {
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-    private static PostDto mapEntityToDto(Post post) {
+    private static PostDto mapToDto(Post post) {
         PostDto postResponeDto = new PostDto();
         postResponeDto.setId(post.getId());
         postResponeDto.setTitle(post.getTitle());
@@ -84,7 +84,7 @@ public class PostServiceImpl implements PostService {
 //        }));
 
         //another appraoch
-        List<PostDto> content = listOfPosts.stream().map(post -> mapEntityToDto(post)).collect(Collectors.toList());
+        List<PostDto> content = listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
 
         PostResponseDto postResponseDto = new PostResponseDto(content, posts.getNumber(), posts.getSize(), posts.getTotalElements(), posts.getTotalPages(), posts.isLast());
 
@@ -94,7 +94,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto getPostById(long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-        return mapEntityToDto(post);
+        return mapToDto(post);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class PostServiceImpl implements PostService {
         //save and return
         Post updatedPost = postRepository.save(post);
 
-        return mapEntityToDto(updatedPost);
+        return mapToDto(updatedPost);
     }
 
     @Override
