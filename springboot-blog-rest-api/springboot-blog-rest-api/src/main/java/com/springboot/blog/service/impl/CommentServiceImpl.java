@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentDto> getAllCommentsByPostId(long postId, int pageNo, int pageSize, String sortBy, String sortDir) {
         //retrieve comments by post id
-        List<Comment> comments = commentRepository.getCommentsByPostId(postId);
+        List<Comment> comments = commentRepository.findByPostId(postId);
 
         List<CommentDto> commentsResponse = comments.stream().map(comment -> mapToDto(comment)).collect(Collectors.toList());
         return commentsResponse;
