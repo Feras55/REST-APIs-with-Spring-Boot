@@ -1,8 +1,10 @@
 package com.springboot.blog.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 //We throw this exception whenever we write some business logic or validate request parameters
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class BlogApiException extends RuntimeException{
     private HttpStatus httpStatus;
     private String message;
