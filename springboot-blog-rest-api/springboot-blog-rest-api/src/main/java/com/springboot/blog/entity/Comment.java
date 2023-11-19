@@ -1,4 +1,4 @@
-package com.springboot.blog.model;
+package com.springboot.blog.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

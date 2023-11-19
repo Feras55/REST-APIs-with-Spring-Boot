@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/posts")
 public class PostController {
     //Controller should have instance of the service
-    PostService postService;
+    private final PostService postService;
     //constructor
 
     public PostController(PostService postService) {

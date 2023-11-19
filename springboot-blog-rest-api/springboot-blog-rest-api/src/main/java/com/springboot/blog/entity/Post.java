@@ -1,6 +1,5 @@
-package com.springboot.blog.model;
+package com.springboot.blog.entity;
 
-import com.springboot.blog.payload.CommentDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +14,7 @@ import java.util.Set;
 @NoArgsConstructor //generate no args constructor
 
 @Entity
-@Table(
-        name = "post", uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})} //states that title is unique
+@Table(name = "post", uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})} //states that title is unique
 )
 public class Post {
     @Id

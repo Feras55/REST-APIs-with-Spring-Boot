@@ -2,7 +2,7 @@ package com.springboot.blog.service.impl;
 
 import com.springboot.blog.exception.BlogApiException;
 import com.springboot.blog.exception.ResourceNotFoundException;
-import com.springboot.blog.model.*;
+import com.springboot.blog.entity.*;
 
 import com.springboot.blog.payload.CommentDto;
 import com.springboot.blog.repository.CommentRepository;
