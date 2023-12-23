@@ -1,6 +1,6 @@
 package com.springboot.blog.service.impl;
 
-import com.springboot.blog.exception.BlogApiException;
+import com.springboot.blog.exception.BlogAPIException;
 import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.entity.*;
 
@@ -60,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
 
         //check if comment is related to the particular post (i.e the comment is on the post with the specified postId)
         if (!comment.getPost().equals(post)) {
-            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
         }
 
         return mapToDto(comment);
@@ -75,7 +75,7 @@ public class CommentServiceImpl implements CommentService {
         );
 
         if (!comment.getPost().equals(post)) {
-            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
         }
 
         comment.setName(commentRequestDto.getName());
@@ -95,7 +95,7 @@ public class CommentServiceImpl implements CommentService {
         );
 
         if (!comment.getPost().equals(post)) {
-            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
         }
 
         commentRepository.delete(comment);
